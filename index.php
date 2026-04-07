@@ -104,3 +104,6 @@ include "includes/menu.php";
   </div>
 
 </main>
+<?php
+include "includes/footer.php";
+?>

@@ -1,3 +1,8 @@
+<!-- conectar o arquivo header.php-->
+<?php
+include "includes/header.php";
+include "includes/menu.php";
+?>
 
 <header class="container mt-4">
   <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">

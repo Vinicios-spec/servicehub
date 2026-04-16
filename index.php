@@ -1,6 +1,7 @@
 <!-- conectar o arquivo header.php-->
 <?php
 require_once "config/conexao.php";
+$pdo = obterPdo();
 
 $cmd = $pdo->prepare("SELECT * FROM servicos WHERE descontinuado=b'0'");
 $cmd->execute();
@@ -54,7 +55,7 @@ include "includes/menu.php";
             <div class="card-body">
               <h5><?= $servico['nome'] ?></h5>
               <p><?= $servico['descricao'] ?></p>
-              <p class="fw-bold text-success">R$<?= number_format($servicos['preco'],2,',','.')  ?></p>
+              <p class="fw-bold text-success">R$<?= number_format($servico['preco'],2,',','.')  ?></p>
             </div>
           </article>
         </div>

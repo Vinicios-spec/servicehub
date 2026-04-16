@@ -23,7 +23,7 @@ include "includes/menu.php";
   <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner rounded shadow">
       <div class="carousel-item active">
-        <img src="assets/img/banner1.jpg" class="d-block w-100 banner-img" alt="Banner 1">
+        <img src="assets/img/banner4.jpg" class="d-block w-100 banner-img" alt="Banner 1">
       </div>
       <div class="carousel-item">
         <img src="assets/img/banner2.jpg" class="d-block w-100 banner-img" alt="Banner 2">

@@ -2,15 +2,49 @@
 // $senha = password_hash("123456",PASSWORD_DEFAULT);
 // echo $senha;
 
-require_once "class/Usuario.php";
-$usuario = new Usuario();
-$usuario->setNome('Milharino Santos');
-$usuario->setEmail('mil@harino.sa');
-$usuario->setSenha('mI2026@TV');
-$usuario->setTipo(2);
+// require_once "class/Usuario.php";
+// $usuario = new Usuario();
+// $usuario->setNome('Milharino Santos');
+// $usuario->setEmail('mil@harino.sa');
+// $usuario->setSenha('mI2026@TV');
+// $usuario->setTipo(2);
 
-if($usuario->inserir()){
-    echo "Usuário ".$usuario->getNome()." Inserido com sucesso com o ID".$usuario->getId();
+// if($usuario->inserir()){
+//     echo "Usuário ".$usuario->getNome()." Inserido com sucesso com o ID".$usuario->getId();
+// }
+
+ini_set('display_errors', 1);
+ini_set('display_startup_erros', 1);
+error_reporting(E_ALL);
+
+require_once "class/Usuario.php";
+
+// testando update
+$usuario = new Usuario();
+$usuario->buscarPorId(240);
+if($usuario->atualizarSenha(password_hash("123456", PASSWORD_DEFAULT))){
+    echo "Senha do usuario ".$usuario->getNome()." atualizada com sucesso!";
 }
+
+
+
+
+
+
+// if($usuario->buscarPorId(240))
+// echo "<pre>";
+// print_r($usuario);
+// }else{
+//     echo "Usuario nao cadastrado";
+//     die();
+// }
+// $usuario->setNome("Marciano Santos");
+// echo "<hr>";
+// echo "<pre>";
+// if($usuario->atualizar())
+// print_r($usuario);
+
+
+
 
 ?>

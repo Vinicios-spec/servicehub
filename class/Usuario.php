@@ -88,4 +88,60 @@ class Usuario{
 
         }
 
+        // Listar
+        public static function listar():array{
+            $cmd = obterPdo()->query("select * from usuarios order by id desc");
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // buscar por ID
+        public function buscarPorId(int $id):bool{
+            $sql = "SELECT * FROM  usuarios WHERE id = :id";
+            $cmd = obterPdo()->prepare($sql);
+            $cmd->bindValue(":id",$id);
+            $cmd->execute();
+            if($cmd->rowCount() > 0){
+                $dados = $cmd->fetch(PDO::FETCH_ASSOC);
+                $this->id = $dados['id'];
+                $this->setNome($dados['nome']);
+                $this->setEmail($dados['email']);
+                $this->setSenha($dados['senha']);
+                $this->setTipo($dados['tipo']);
+                $this->setAtivo($dados['ativo']);
+                $this->primeiro_login = $dados['primeiro_login'];
+                return true;
+            }
+            return false;
+        }
+        // Atualizar
+        public function atualizar():bool{
+            if(!$this->id) return false;
+            // var_dump($this->id);
+            // die();
+            $sql = "UPDATE usuarios
+                    set nome = :nome, email = :email, tipo = :tipo, ativo = :ativo,
+                        priemrio_login = :primeiro_login
+                        WHERE id = :id";
+            $cmd = $this->pdo->prepare($sql);
+            $cmd->bindValue(":id", $this->id);
+            $cmd->bindValue(":nome", $this->nome);
+            $cmd->bindValue(":email", $this->email);
+            $cmd->bindValue(":tipo", $this->tipo);
+            $cmd->bindValue(":atvo", $this->ativo, PDO::PARAM_BOOL);
+            $cmd->bindValue(":primeiro_login", $this->primeiro_login, PDO::PARAM_BOOL);
+            return $cmd->execute();
+        }
+
+        // Atualizar senha (já deve vir com passwrod_hash)
+        public function atualizarSenha(string $senhaHash):bool{
+            if(!$this->id) return false;
+
+            $sql = "UPDATE usuarios SET senha = :senha WHERE id = :id";
+            $cmd = $this->pdo->prepare($sql);
+            $cmd->bindValue(":senha", $senhaHash);
+            $cmd->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            return $cmd->execute();
+        }
+
 }

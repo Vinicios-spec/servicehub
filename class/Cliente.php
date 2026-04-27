@@ -51,7 +51,7 @@ class Cliente
     // Inserir
     public function inserir(): bool
     {
-        $sql = "INSERT cliente (usuario_id, telefone, cpf)
+        $sql = "INSERT clientes (usuario_id, telefone, cpf)
     values (:usuario_id, :telefone, :cpf)";
         $cmd = $this->pdo->prepare($sql);
         $cmd->bindValue(":usuario_id", $this->usuario_id);
@@ -69,7 +69,7 @@ class Cliente
     {
         if (!$this->id) return false;
 
-        $sql = "UPDATE cliente
+        $sql = "UPDATE clientes
                     set usuario_id = :usuario_id, telefone = :telefone, cpf = :cpf,
             WHERE id = :id";
         $cmd = $this->pdo->prepare($sql);
@@ -83,7 +83,7 @@ class Cliente
     // Listar
     public static function listar(): array
     {
-        $cmd = obterPdo()->query("select * from cliente order by id desc");
+        $cmd = obterPdo()->query("select * from clientes order by id desc");
         return $cmd->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -91,7 +91,7 @@ class Cliente
     // Buscar por ID
     public function buscarPorId(int $id): bool
     {
-        $sql = "SELECT * FROM  cliente WHERE id = :id";
+        $sql = "SELECT * FROM  clientes WHERE id = :id";
         $cmd = obterPdo()->prepare($sql);
         $cmd->bindValue(":id", $id);
         $cmd->execute();
@@ -110,10 +110,11 @@ class Cliente
 
      public function buscarPorUsuario(int $usuario_id): bool
     {
-        $sql = "SELECT * FROM  usuario";
+        $sql = "SELECT * FROM  clientes WHERE usuario_id = :usuario_id LIMIT 1";
         $cmd = obterPdo()->prepare($sql);
-        $cmd->bindValue(":usuario", $usuario_id);
+        $cmd->bindValue(":usuario", $usuario_id, PDO::PARAM_INT);
         $cmd->execute();
+
         if ($cmd->rowCount() > 0) {
             $dados = $cmd->fetch(PDO::FETCH_ASSOC);
             $this->id = $dados['id'];

@@ -9,6 +9,7 @@ class Servico
     private $preco;
     private $descontinuado;
     private $pdo;
+    private $ativo = 1;
 
     public function __construct()
     {
@@ -50,6 +51,14 @@ class Servico
     public function setDescontinuado(string $descontinuado)
     {
         $this->descontinuado = $descontinuado;
+    }
+    public function getAtivo()
+    {
+        return $this->ativo;
+    }
+    public function setAtivo(string $ativo)
+    {
+        $this->ativo = $ativo;
     }
 
 
@@ -97,6 +106,12 @@ class Servico
     }
 
     // Listar Ativos
+    public static function ListarAtivo(): array
+    {
+        $cmd = obterPdo()->query("select * from servico order by id desc");
+        return $cmd->fetchAll(PDO::FETCH_ASSOC);
+
+    }
 
 
     // buscar por ID

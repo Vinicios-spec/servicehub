@@ -9,7 +9,6 @@ class Servico
     private $preco;
     private $descontinuado;
     private $pdo;
-    private $ativo = 1;
 
     public function __construct()
     {
@@ -52,26 +51,16 @@ class Servico
     {
         $this->descontinuado = $descontinuado;
     }
-    public function getAtivo()
-    {
-        return $this->ativo;
-    }
-    public function setAtivo(string $ativo)
-    {
-        $this->ativo = $ativo;
-    }
-
 
     // Inserir
     public function inserir(): bool
     {
         $sql = "INSERT servico (nome, descricao, preco, descontinuado)
-        values (:nome, :descricao, :preco, :descontinuado)";
+        values (:nome, :descricao, :preco, b'0')";
         $cmd = $this->pdo->prepare($sql);
         $cmd->bindValue(":nome", $this->nome);
         $cmd->bindValue(":descricao", $this->descricao);
         $cmd->bindValue(":preco", $this->preco);
-        $cmd->bindValue(":descontinuado", $this->descontinuado);
         if ($cmd->execute()) {
             $this->id = $this->pdo->lastInsertId();
             return true;
@@ -86,14 +75,13 @@ class Servico
         if (!$this->id) return false;
 
         $sql = "UPDATE servico
-                    set nome = :nome, descricao = :descricao, preco = :preco, descontinuado = :descontinuado
+                    set nome = :nome, descricao = :descricao, preco = :preco
             WHERE id = :id";
         $cmd = $this->pdo->prepare($sql);
-        $cmd->bindValue(":id", $this->id);
+        $cmd->bindValue(":id", $this->id, PDO::PARAM_INT);
         $cmd->bindValue(":nome", $this->nome);
         $cmd->bindValue(":descricao", $this->descricao);
         $cmd->bindValue(":preco", $this->preco);
-        $cmd->bindValue(":descontinuado", $this->descontinuado);
         return $cmd->execute();
     }
 
@@ -108,7 +96,7 @@ class Servico
     // Listar Ativos
     public static function ListarAtivo(): array
     {
-        $cmd = obterPdo()->query("select * from servico order by id desc");
+        $cmd = obterPdo()->query("SELECT * FROM servicos WHERE descontinuado=b'0' ORDER BY id ASC");
         return $cmd->fetchAll(PDO::FETCH_ASSOC);
 
     }
@@ -119,17 +107,24 @@ class Servico
     {
         $sql = "SELECT * FROM  servico WHERE id = :id";
         $cmd = obterPdo()->prepare($sql);
-        $cmd->bindValue(":id", $id);
+        $cmd->bindValue(":id", $id, PDO::PARAM_INT);
         $cmd->execute();
         if ($cmd->rowCount() > 0) {
             $dados = $cmd->fetch(PDO::FETCH_ASSOC);
-            $this->id = $dados['id'];
-            $this->setNome($dados['nome']);
-            $this->setDescricao($dados['descricao']);
-            $this->setPreco($dados['preco']);
-            $this->setDescontinuado($dados['descontinuado']);
+            $this->id = $dados["id"];
+            $this->nome = $dados["nome"];
+            $this->descricao = $dados["descricao"];
+            $this->preco = $dados["preco"];
+            $this->descontinuado = $dados["descontinuado"];
             return true;
         }
         return false;
+    }
+
+    public static function excluir(int $id): bool {
+        $sql = "UPDATE servicos SET descontinuado=b'1' WHERE id = :id";
+        $cmd = obterPdo()->prepare($sql);
+        $cmd->bindValue(":id", $id, PDO::PARAM_INT);
+        return $cmd->execute();
     }
 }

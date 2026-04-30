@@ -8,7 +8,8 @@ if(isset($_SESSION['usuario_id'])){
 }
 
 require "class/Usuario.php";
-$user = new Usuario();
+print_r($_POST['email']);
+// $user = new Usuario();
 // var_dump($user->efetuarLogin('admin@servicehub.com', 'admin123'));
 $msg = "";
 if ($_SERVER['REQUEST_METHOD']==="POST"){

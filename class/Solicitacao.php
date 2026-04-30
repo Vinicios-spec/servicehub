@@ -57,7 +57,18 @@ class Solicitacao {
     }
 
     public static function listar(): array {
-        $sql = "SELECT * FROM solicitacoes ORDER BY data_cad DESC";
+        //$sql = "SELECT * FROM solicitacoes ORDER BY data_cad DESC";
+        $sql = "SELECT s.id, s.status, s.data_cad
+            u.nome AS ciente_nome,
+            u.email AS cliente_email,
+            GROUP_CONCAT(se.nome SEPARATOR ', ') AS servicos
+        FROM solicitacoes s
+        INNER JOIN clientes c ON c.id = s.cliente_id
+        INNER JOIN usuarios u ON u.id = c.usuario_id
+        INNER JOIN servico_solicitacao ss ON ss.solicitacao_id = s.id
+        INNER JOIN servicos se ON se.id = ss.servico_id
+        GROUP BY s.id, s.status, s.data_cad, u.nome, u.email
+        ORDER BY s.data_cad DESC";
         $cmd = obterPdo()->query($sql);
         return $cmd->fetchAll(PDO::FETCH_ASSOC);
     }

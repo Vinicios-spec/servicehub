@@ -31,14 +31,14 @@ class ServicoSolicitacao
     }
     public function setSolicitacaoId(int $solicitacao_id)
     {
-        $this->servico_id = $solicitacao_id;
+        $this->solicitacao_id = $solicitacao_id;
     }
-    public static function associar(int $servico_id, int $solicitacao_id): bool 
+    public function associar(int $servico_id, int $solicitacao_id): bool 
     {
         $sql = "insert servico_solicitacao values(:servico_id, :solicitacao_id, default)";
         $cmd = obterPdo()->prepare($sql);
-        $cmd->bindValue(":servico_id", $servico_id);
-        $cmd->bindValue(":solicitacao_id", $solicitacao_id);
+        $cmd->bindValue(":servico_id", $this->$servico_id);
+        $cmd->bindValue(":solicitacao_id", $this->$solicitacao_id);
         return $cmd->execute();
     }
     public static function listarServicosDaSolicitacao(int $solicitacao_id): array 

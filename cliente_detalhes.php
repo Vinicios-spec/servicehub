@@ -1,4 +1,8 @@
+<?php 
 
+include "includes/header.php";
+include "includes/menu.php";
+?>
 
 <main class="container mt-5">
   <h3>Solicitação #</h3>
@@ -18,3 +22,8 @@
 
   <a href="cliente_dashboard.php" class="btn btn-secondary">Voltar</a>
 </main>
+
+
+<?php 
+include "includes/footer.php"
+?>

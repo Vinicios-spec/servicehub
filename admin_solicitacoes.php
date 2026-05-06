@@ -44,7 +44,7 @@ include "includes/menu.php";
           <td><?= $solicitacao['status']?></td>
           <td><?= date("d/m/Y H:i", strtotime($solicitacao["data_cad"])) ?></td>
           <td>
-            <a href="admin_responder.php?id=" class="btn btn-primary btn-sm">Responder</a>
+            <a href="admin_responder.php?id=<?= $solicitacao['id'] ?>" class="btn btn-primary btn-sm">Responder</a>
           </td>
         </tr>
         <?php endforeach ?>

@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     echo "<h3>Chamado pela ação do formulário (POST)</h3>";
     $id = $_POST['txtid'];
     $sql = "select nome from servicos where id = :id";
-    $cmd = $pdo->prepare($sql);
+    $cmd = obterPdo()->prepare($sql);
     $cmd->execute([":id"=>$id]);
     $serv = $cmd->fetch(PDO::FETCH_ASSOC);
     var_dump($serv);
@@ -17,7 +17,7 @@ if($_SERVER['REQUEST_METHOD']=='GET'){
     $idViaGet = $_GET['txtid'];
     var_dump($idViaGet);
     $sql = "select nome from servicos where id = :id";
-    $cmd = $pdo->prepare($sql);
+    $cmd = obterPdo()->prepare($sql);
     $cmd->execute([":id"=>$idViaGet]);
     $serv = $cmd->fetch(PDO::FETCH_ASSOC);
     var_dump($serv);

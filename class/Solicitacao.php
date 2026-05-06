@@ -1,5 +1,6 @@
 <?php
 include_once "config/conexao.php";
+include_once "class/ServicoSolicitacao.php";
 
 class Solicitacao {
 
@@ -12,6 +13,7 @@ class Solicitacao {
     private $data_atualizacao;
     private $data_resposta;
     private $resposta_admin;
+    public $servicos = [];
     private $endereco;
     private $pdo;
 
@@ -23,10 +25,28 @@ class Solicitacao {
         return $this->id;
     }
 
+    public function getClienteId() {
+        return $this->cliente_id;
+    }
+
+    public function getEndereco() {
+        return $this->endereco;
+    }
+    public function getStatus() {
+        return $this->status;
+    }
+    public function getResposta() {
+        return $this->resposta_admin;
+    }
+    public function getDataResposta() {
+        return $this->data_resposta;
+    }
     public function setClienteId(int $cliente_id) {
         $this->cliente_id = $cliente_id;
     }
-
+    public function getDescricaoProblema() {
+        return $this->descricao_problema;
+    }
     public function setDescricaoProblema(string $descricao) {
         $this->descricao_problema = $descricao;
     }
@@ -100,6 +120,9 @@ class Solicitacao {
             $this->data_resposta = $dados["data_resposta"];
             $this->resposta_admin = $dados["resposta_admin"];
             $this->endereco = $dados["endereco"];
+
+            $this->servicos =
+            ServicoSolicitacao::listarServicosDaSolicitacao($dados["id"]);
 
             return true;
         }

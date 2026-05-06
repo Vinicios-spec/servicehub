@@ -1,4 +1,11 @@
-<<?php
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+
+
 session_start(); //iniciar a sessão ou atualizar uma sessão aberta
 
 // Evita acesso se já estiver logado
@@ -8,7 +15,7 @@ if(isset($_SESSION['usuario_id'])){
 }
 
 require "class/Usuario.php";
-print_r($_POST['email']);
+// print_r($_POST['email']);
 // $user = new Usuario();
 // var_dump($user->efetuarLogin('admin@servicehub.com', 'admin123'));
 $msg = "";
@@ -17,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD']==="POST"){
     $senha = $_POST["senha"]?? null;
     if(!$email || !$senha){
         $msg ="preencha os dados corretamente";
-       
     }
     $usuario = Usuario::efetuarLogin($email, $senha);
     if(count($usuario)>0){
